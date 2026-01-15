@@ -167,7 +167,7 @@ function initAppIfNeeded(){
     saveState();
     e.target.reset();
     $("#postDate").value = todayISO();
-    toast("Post added â¨");
+    toast("Post added ✨");
     renderPosts();
     renderOverview();
   });
@@ -194,7 +194,7 @@ function initAppIfNeeded(){
     state.tasks.unshift(t);
     saveState();
     e.target.reset();
-    toast("Task added â");
+    toast("Task added ☕");
     renderTasks();
     renderOverview();
   });
@@ -221,7 +221,7 @@ function initAppIfNeeded(){
     state.contacts.unshift(c);
     saveState();
     e.target.reset();
-    toast("Contact saved ð");
+    toast("Contact saved 💎");
     renderContacts();
     renderOverview();
   });
@@ -247,7 +247,7 @@ function initAppIfNeeded(){
     state.goals.unshift(g);
     saveState();
     e.target.reset();
-    toast("Goal added ð¯");
+    toast("Goal added 🎯");
     renderGoals();
     renderOverview();
   });
@@ -271,7 +271,7 @@ function initAppIfNeeded(){
       leads: Number($("#mLeads").value || 0),
     };
     saveState();
-    toast("Metrics saved ð");
+    toast("Metrics saved 👑");
     renderMetrics();
     renderOverview();
   });
@@ -306,8 +306,8 @@ function activateTab(tab){
   const titleMap = {
     overview: ["Overview", "Your marketing day, styled in gold."],
     calendar: ["Content Calendar", "Schedule posts by platform and date."],
-    todos: ["CEO ToâDos", "Checklist your way to consistent content."],
-    contacts: ["Contacts Hub", "Brands, clients, collabs â all in one place."],
+    todos: ["CEO To‑Dos", "Checklist your way to consistent content."],
+    contacts: ["Contacts Hub", "Brands, clients, collabs — all in one place."],
     goals: ["Goals", "Track the numbers that move your business."],
     notes: ["Notes + Hooks", "Save scripts, captions, offers, ideas."],
     metrics: ["Money & Metrics", "Lite tracking for revenue and deals."],
@@ -344,10 +344,10 @@ function renderOverview(){
 
   // Affirmations rotation
   const affirmations = [
-    "Your brand is a luxury experience â post like it.",
+    "Your brand is a luxury experience — post like it.",
     "Consistency is the flex. Show up anyway.",
     "Create in peace. Collect in profit.",
-    "Youâre not behind. Youâre building momentum.",
+    "You’re not behind. You’re building momentum.",
     "Elegant execution beats perfect planning."
   ];
   const pick = affirmations[(new Date().getDate() + posts.length) % affirmations.length];
@@ -363,7 +363,7 @@ function renderOverview(){
   const ul = $("#upcomingList");
   ul.innerHTML = "";
   if(!upcoming.length){
-    ul.innerHTML = `<div class="muted">No posts scheduled for the next 7 days. Add one in âContent Calendarâ.</div>`;
+    ul.innerHTML = `<div class="muted">No posts scheduled for the next 7 days. Add one in “Content Calendar”.</div>`;
   }else{
     upcoming.forEach(p=>{
       const item = document.createElement("div");
@@ -371,7 +371,7 @@ function renderOverview(){
       item.innerHTML = `
         <div class="item__main">
           <div class="item__title">${escapeHtml(p.title)}</div>
-          <div class="item__meta">${escapeHtml(p.date)} â¢ <span class="tag tag--${escapeClass(p.platform)}">${escapeHtml(p.platform)}</span> â¢ ${escapeHtml(p.type)}</div>
+          <div class="item__meta">${escapeHtml(p.date)} • <span class="tag tag--${escapeClass(p.platform)}">${escapeHtml(p.platform)}</span> • ${escapeHtml(p.type)}</div>
         </div>
       `;
       ul.appendChild(item);
@@ -383,7 +383,7 @@ function renderOverview(){
   const tl = $("#taskList");
   tl.innerHTML = "";
   if(!openTasks.length){
-    tl.innerHTML = `<div class="muted">No open tasks. Add one in âCEO ToâDosâ.</div>`;
+    tl.innerHTML = `<div class="muted">No open tasks. Add one in “CEO To‑Dos”.</div>`;
   }else{
     openTasks.forEach(t=>{
       const pri = priorityClass(t.priority);
@@ -392,7 +392,7 @@ function renderOverview(){
       item.innerHTML = `
         <div class="item__main">
           <div class="item__title">${escapeHtml(t.text)}</div>
-          <div class="item__meta">${t.due ? ("Due " + escapeHtml(t.due) + " â¢ ") : ""}<span class="priority ${pri}">${escapeHtml(t.priority)}</span></div>
+          <div class="item__meta">${t.due ? ("Due " + escapeHtml(t.due) + " • ") : ""}<span class="priority ${pri}">${escapeHtml(t.priority)}</span></div>
         </div>
       `;
       tl.appendChild(item);
@@ -442,7 +442,7 @@ function renderPosts(){
           <div style="font-weight:900">${escapeHtml(p.title || "")}</div>
           <div style="color:rgba(255,255,255,.65);font-size:12px">${escapeHtml(p.hook || "")}</div>
         </div>
-        <div class="cell"><button class="iconBtn" title="Delete">Ã</button></div>
+        <div class="cell"><button class="iconBtn" title="Delete">×</button></div>
       `;
       row.querySelector("button").addEventListener("click", ()=>{
         state.posts = state.posts.filter(x=>x.id!==p.id);
@@ -472,17 +472,17 @@ function renderTasks(){
     item.innerHTML = `
       <div class="item__main">
         <div class="item__title">${escapeHtml(t.text)}</div>
-        <div class="item__meta">${t.due ? ("Due " + escapeHtml(t.due) + " â¢ ") : ""}<span class="priority ${pri}">${escapeHtml(t.priority)}</span></div>
+        <div class="item__meta">${t.due ? ("Due " + escapeHtml(t.due) + " • ") : ""}<span class="priority ${pri}">${escapeHtml(t.priority)}</span></div>
       </div>
       <div class="item__right">
-        <span class="check ${t.done ? "is-on":""}" title="Toggle done">â</span>
-        <button class="iconBtn" title="Delete">Ã</button>
+        <span class="check ${t.done ? "is-on":""}" title="Toggle done">✓</span>
+        <button class="iconBtn" title="Delete">×</button>
       </div>
     `;
     item.querySelector(".check").addEventListener("click", ()=>{
       t.done = !t.done;
       saveState();
-      toast(t.done ? "Task done ð" : "Task reopened");
+      toast(t.done ? "Task done 👑" : "Task reopened");
       renderTasks();
       renderOverview();
     });
@@ -516,12 +516,12 @@ function renderContacts(){
         <div class="item__title">${escapeHtml(c.name)}</div>
         <div class="item__meta">
           <span class="tag">${escapeHtml(c.tag)}</span>
-          ${c.handle ? (" â¢ " + escapeHtml(c.handle)) : ""}
+          ${c.handle ? (" • " + escapeHtml(c.handle)) : ""}
         </div>
         ${c.notes ? `<div class="item__meta">${escapeHtml(c.notes)}</div>` : ""}
       </div>
       <div class="item__right">
-        <button class="iconBtn" title="Delete">Ã</button>
+        <button class="iconBtn" title="Delete">×</button>
       </div>
     `;
     item.querySelector("button").addEventListener("click", ()=>{
@@ -558,8 +558,8 @@ function renderGoals(){
         </div>
       </div>
       <div class="item__right">
-        <button class="iconBtn" title="Edit">â</button>
-        <button class="iconBtn" title="Delete">Ã</button>
+        <button class="iconBtn" title="Edit">✎</button>
+        <button class="iconBtn" title="Delete">×</button>
       </div>
     `;
     const [editBtn, delBtn] = item.querySelectorAll("button");
@@ -626,7 +626,7 @@ function seedSample(){
 
   state.posts = [
     { id: uid(), date: iso(d1), platform:"Instagram", type:"Reel / Short", title:"3 mistakes killing your sales", hook:"Stop scrolling if you're a business owner..." },
-    { id: uid(), date: iso(d2), platform:"TikTok", type:"Behind-the-scenes", title:"Pack orders with me", hook:"Come with me while I ship todayâs orders" },
+    { id: uid(), date: iso(d2), platform:"TikTok", type:"Behind-the-scenes", title:"Pack orders with me", hook:"Come with me while I ship today’s orders" },
     { id: uid(), date: iso(d3), platform:"Pinterest", type:"Pin", title:"Offer graphic set (3 pins)", hook:"Save this to post later" },
   ];
   state.tasks = [
@@ -645,10 +645,10 @@ function seedSample(){
     { id: uid(), title:"$2,000 revenue from social (MTD)", target:2000, progress:520 },
   ];
   state.metrics = { revenue: 520, clicks: 184, deals: 1, leads: 9 };
-  state.quickNotes = "Hook idea: âIf I started over with 0 followers, Iâd do THISâ¦â\nOffer: limited-time bundle (pins + reels + captions)\nCTA: comment âBOSSâ for the link.";
+  state.quickNotes = "Hook idea: “If I started over with 0 followers, I’d do THIS…”\nOffer: limited-time bundle (pins + reels + captions)\nCTA: comment “BOSS” for the link.";
   state.notesVault = "Hooks\n- Stop scrolling if you sell ___\n- 3 signs you're underpricing\n\nScripts\n- Behind-the-scenes: pack orders + voiceover\n\nOffers\n- Starter bundle: 7-day content plan + templates";
   saveState();
-  toast("Sample loaded â¨");
+  toast("Sample loaded ✨");
   renderAll();
 }
 
@@ -660,15 +660,15 @@ function quickAdd(){
     const d = $("#postDate");
     d && (d.value = todayISO());
     $("#postTitle")?.focus();
-    toast("Add your post â¨");
+    toast("Add your post ✨");
   }else if(choice.trim() === "2"){
     activateTab("todos");
     $("#taskText")?.focus();
-    toast("Add your task â");
+    toast("Add your task ☕");
   }else if(choice.trim() === "3"){
     activateTab("contacts");
     $("#contactName")?.focus();
-    toast("Add your contact ð");
+    toast("Add your contact 💎");
   }else{
     toast("Choose 1, 2, or 3");
   }
@@ -697,7 +697,7 @@ function importJSON(e){
       const parsed = JSON.parse(String(reader.result || "{}"));
       state = { ...defaultState(), ...parsed };
       saveState();
-      toast("Backup imported â¨");
+      toast("Backup imported ✨");
       renderAll();
     }catch(err){
       console.error(err);
@@ -719,3 +719,4 @@ window.addEventListener("hashchange", ()=>{
     $$(".sidelink").forEach(b=>b.classList.remove("is-active"));
     $$(".sidelink")[0]?.classList.add("is-active");
   }
+});
