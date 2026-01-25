@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HustlerHer Social Suite</title>
+  <meta name="description" content="Luxury micro-SaaS planner for business women managing social media marketing."/>
+  <style>
+    :root{
+      --bg:#0b0f17;
+      --card: rgba(255,255,255,.07);
+      --txt:#f5f6fb;
+      --muted:#b9bed0;
+      --gold:#d4af37;
+      --rose:#e7a7b6;
+      --cream:#f7f1ea;
+      --line: rgba(255,255,255,.14);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --r: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(900px 600px at 15% 20%, rgba(231,167,182,.25), transparent 55%),
+        radial-gradient(900px 600px at 90% 10%, rgba(212,175,55,.22), transparent 55%),
+        radial-gradient(900px 600px at 70% 90%, rgba(120,180,255,.16), transparent 55%),
+        linear-gradient(180deg, #070a10, #0b0f17 40%, #070a10);
+      color: var(--txt);
+      min-height:100vh;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1120px; margin:0 auto; padding:22px}
+
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(7,10,16,.62);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar .inner{
+      max-width:1120px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 22px;
+      gap:12px;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      font-weight:900; letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .badge{
+      font-size:12px; padding:6px 10px;
+      border:1px solid rgba(212,175,55,.45);
+      border-radius:999px;
+      color: var(--cream);
+      background: rgba(212,175,55,.12);
+    }
+    .nav{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav a{
+      padding:10px 12px;
+      border:1px solid transparent;
+      border-radius:999px;
+      color: var(--muted);
+    }
+    .nav a:hover{border-color: var(--line); color: var(--txt)}
+    .nav a.active{
+      border-color: rgba(212,175,55,.55);
+      color: var(--txt);
+      background: rgba(212,175,55,.10);
+    }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--txt);
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+      cursor:pointer;
+      user-select:none;
+      font-weight:750;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn:active{transform: translateY(0)}
+    .btn.primary{
+      border-color: rgba(212,175,55,.70);
+      background: linear-gradient(135deg, rgba(212,175,55,.25), rgba(231,167,182,.18));
+    }
+    .btn.rose{
+      border-color: rgba(231,167,182,.65);
+      background: rgba(231,167,182,.12);
+    }
+    .btn.dark{background: rgba(0,0,0,.30)}
+    .btn.small{padding:8px 12px; font-size:13px}
+
+    .grid{display:grid; gap:16px}
+    .grid.two{grid-template-columns: repeat(2, minmax(0,1fr))}
+    .grid.three{grid-template-columns: repeat(3, minmax(0,1fr))}
+    @media (max-width: 980px){ .grid.two,.grid.three{grid-template-columns:1fr} }
+
+    .card{
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .pad{padding:18px}
+    .card h3{margin:0 0 8px; font-size:18px}
+    .muted{color:var(--muted)}
+    .tiny{font-size:12px; color: var(--muted)}
+    .hr{height:1px; background: var(--line); margin:12px 0}
+
+    .hero{
+      padding:34px 0 18px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){ .hero{grid-template-columns:1fr} }
+    .heroTitle{
+      font-size:44px; line-height:1.02;
+      margin:0 0 12px;
+      letter-spacing:-.8px;
+    }
+    .heroTitle span{
+      background: linear-gradient(90deg, var(--gold), var(--rose), #ffffff);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+    .heroP{margin:0 0 18px; color: var(--muted); font-size:16px; max-width:56ch}
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap}
+
+    .heroArt{
+      position:relative;
+      min-height: 290px;
+      background:
+        radial-gradient(200px 200px at 20% 30%, rgba(212,175,55,.30), transparent 60%),
+        radial-gradient(260px 220px at 70% 35%, rgba(231,167,182,.26), transparent 60%),
+        radial-gradient(260px 220px at 50% 85%, rgba(120,180,255,.18), transparent 60%),
+        rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .float{
+      position:absolute;
+      width:150px; height:150px;
+      border-radius:40px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
+      animation: bob 5.5s ease-in-out infinite;
+    }
+    .float.one{left:18px; top:18px}
+    .float.two{right:18px; top:52px; animation-delay: -1.2s}
+    .float.three{left:58px; bottom:18px; animation-delay: -2.1s}
+    @keyframes bob{0%,100%{transform: translateY(0)}50%{transform: translateY(-10px)}}
+
+    .kpi{
+      position:absolute; right:16px; bottom:14px;
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid rgba(212,175,55,.45);
+      background: rgba(0,0,0,.22);
+      max-width: 70%;
+    }
+    .kpi b{color: var(--cream)}
+    .spark{
+      display:inline-block;
+      width:8px; height:8px; border-radius:999px;
+      background: var(--gold);
+      box-shadow: 0 0 18px rgba(212,175,55,.8);
+      margin-right:8px;
+    }
+
+    .appShell{
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap:16px;
+      margin-top:16px;
+    }
+    @media (max-width: 980px){ .appShell{grid-template-columns:1fr} }
+    .side{position:sticky; top:86px; height: fit-content; padding:14px}
+    .side h4{margin:0 0 8px}
+    .side a{
+      display:flex; gap:10px; align-items:center;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid transparent;
+      color: var(--muted);
+    }
+    .side a:hover{border-color: var(--line); color: var(--txt)}
+    .side a.active{
+      border-color: rgba(231,167,182,.55);
+      background: rgba(231,167,182,.10);
+      color: var(--txt);
+    }
+
+    input, textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--txt);
+      padding:10px 12px;
+      outline:none;
+    }
+    textarea{min-height:120px; resize:vertical}
+    .row{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+    @media (max-width: 980px){ .row{grid-template-columns:1fr} }
+
+    .toast{
+      position: fixed; right: 16px; bottom: 16px;
+      background: rgba(0,0,0,.7);
+      border:1px solid rgba(255,255,255,.16);
+      padding:12px 14px;
+      border-radius:16px;
+      color: var(--cream);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      opacity:0; transform: translateY(8px);
+      pointer-events:none;
+      transition: .18s ease;
+      max-width: 360px;
+      z-index: 999;
+    }
+    .toast.show{opacity:1; transform: translateY(0)}
+
+    .lock{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(212,175,55,.35);
+      background: rgba(212,175,55,.08);
+      color: var(--cream);
+      font-size:13px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <div class="brand">
+        HustlerHer Social Suite <span class="badge">Luxury Demo</span>
+      </div>
+
+      <nav class="nav" id="topNav">
+        <a href="#/" data-route="#/">Home</a>
+        <a href="#/pricing" data-route="#/pricing">Pricing</a>
+        <a href="#/login" data-route="#/login">Login</a>
+        <a href="#/affiliate" data-route="#/affiliate">Affiliate Login</a>
+        <a href="#/app" data-route="#/app">Dashboard</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="wrap" id="view"></div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // =============== STRIPE LINKS (paste later) ===============
+    const STRIPE = {
+      starter: "PASTE_STRIPE_LINK_STARTER",
+      boss: "PASTE_STRIPE_LINK_BOSS",
+      ceo: "PASTE_STRIPE_LINK_CEO"
+    };
+
+    // =============== USERS (demo only / no backend) ===============
+    const AUTH = {
+      owner:     { email: "owner@hustlerher.com",     pass: "HustleGold!39", role: "owner" },
+      demo:      { email: "demo@hustlerher.com",      pass: "Demo123!",      role: "demo" },
+      affiliate: { email: "affiliate@hustlerher.com", pass: "Aff123!",       role: "affiliate" }
+    };
+
+    // Demo dashboard = only TWO features unlocked:
+    const DEMO_ALLOWED_TABS = new Set(["overview","planner"]);
+
+    // =============== helper functions ===============
+    const $ = (s, el=document) => el.querySelector(s);
+    const toast = (msg) => {
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._tm);
+      toast._tm = setTimeout(() => t.classList.remove("show"), 2200);
+    };
+
+    const store = {
+      get(k, fallback){ try{ return JSON.parse(localStorage.getItem(k)) ?? fallback; }catch{ return fallback; } },
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+    // ===== Affiliate Tracking =====
+    // If someone comes with ?ref=CODE, store it as the "referrer"
+    (function captureAffiliateRef(){
+      const url = new URL(location.href);
+      const ref = url.searchParams.get("ref");
+      if(ref){
+        store.set("hh.referrer", ref);
+        // increment click counter
+        const clicks = store.get("hh.affClicks", {});
+        clicks[ref] = (clicks[ref] || 0) + 1;
+        store.set("hh.affClicks", clicks);
+      }
+    })();
+
+    function getSession(){ return store.get("hh.session", { role: "guest" }); }
+    function setSession(role){ store.set("hh.session", { role, at: Date.now() }); }
+    function logout(){ store.set("hh.session", { role:"guest" }); toast("Logged out."); location.hash="#/"; }
+
+    function requireLoginForApp(){
+      const s = getSession();
+      if(s.role === "guest"){
+        location.hash = "#/login";
+        toast("Please login to open the dashboard.");
+        return false;
+      }
+      if(s.role === "affiliate"){
+        toast("Affiliate accounts access affiliate dashboard only.");
+        location.hash = "#/affiliate";
+        return false;
+      }
+      return true;
+    }
+
+    // =============== demo data ===============
+    const state = {
+      notes: store.get("hh.notes", ""),
+      calendar: store.get("hh.calendar", [
+        {id: crypto.randomUUID(), date:"2026-01-15", platform:"IG", title:"Reel: 3 hooks that sell"},
+        {id: crypto.randomUUID(), date:"2026-01-16", platform:"TikTok", title:"Storytime: first $1k week"}
+      ]),
+      contacts: store.get("hh.contacts", [
+        {id: crypto.randomUUID(), name:"Brand Collab — Lumi Beauty", handle:"@lumibeauty", note:"Pitch bundle"}
+      ]),
+      goals: store.get("hh.goals", { followers: 1000, leads: 40, sales: 25 }),
+      metrics: store.get("hh.metrics", { revenue: 1250, clicks: 860, leads: 42 })
+    };
+
+    const persistAll = () => {
+      store.set("hh.notes", state.notes);
+      store.set("hh.calendar", state.calendar);
+      store.set("hh.contacts", state.contacts);
+      store.set("hh.goals", state.goals);
+      store.set("hh.metrics", state.metrics);
+    };
+
+    // =============== router ===============
+    function parseRoute(){
+      const hash = location.hash || "#/";
+      const [path, queryString] = hash.split("?");
+      const qs = new URLSearchParams(queryString || "");
+      return { path, qs };
+    }
+
+    function setActiveNav(path){
+      document.querySelectorAll("#topNav a").forEach(a=>{
+        const r = a.getAttribute("data-route");
+        const active = (r === "#/" && path === "#/") ||
+                       (r === "#/pricing" && path === "#/pricing") ||
+                       (r === "#/login" && path === "#/login") ||
+                       (r === "#/affiliate" && path === "#/affiliate") ||
+                       (r === "#/app" && (path === "#/app" || path === "#/dashboard"));
+        a.classList.toggle("active", active);
+      });
+    }
+
+    // =============== views ===============
+    function LandingView(){
+      // landing page stays the same (only login added in top nav)
+      return `
+        <section class="hero">
+          <div class="card">
+            <div class="pad">
+              <h1 class="heroTitle">Plan. Post. Profit. <span>In Heels.</span></h1>
+              <p class="heroP">
+                Luxury micro-SaaS demo for business women who run marketing through social media.
+                Open the dashboard demo or login for access.
+              </p>
+
+              <div class="heroActions">
+                <a class="btn primary" href="#/app">Open Dashboard</a>
+                <a class="btn rose" href="#/pricing">See Pricing</a>
+              </div>
+
+              <div class="lock">
+                <span class="spark"></span>
+                Demo dashboard shows <b>2 unlocked features</b>. Owners have <b>full access</b>.
+              </div>
+
+              <div class="hr"></div>
+
+              <div class="grid three">
+                <div class="card"><div class="pad">
+                  <h3>Content Planner</h3>
+                  <div class="muted">Schedule IG/TikTok/Pinterest posts.</div>
+                </div></div>
+
+                <div class="card"><div class="pad">
+                  <h3>Boss Overview</h3>
+                  <div class="muted">KPI snapshot + notes to stay locked in.</div>
+                </div></div>
+
+                <div class="card"><div class="pad">
+                  <h3>Premium Tools</h3>
+                  <div class="muted">Locked for demo. Owner unlocks everything.</div>
+                </div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="heroArt">
+            <div class="float one"></div>
+            <div class="float two"></div>
+            <div class="float three"></div>
+            <div class="kpi"><span class="spark"></span><b>Premium UI</b> • blush / gold • GitHub Pages-ready</div>
+          </div>
+        </section>
+      `;
+    }
+
+    function PricingView(){
+      return `
+        <div class="grid two">
+          <div class="card">
+            <div class="pad">
+              <h2 style="margin:0 0 8px">Pricing</h2>
+              <p class="muted" style="margin:0">Paste Stripe links once and your buttons will work.</p>
+              <div class="hr"></div>
+              <div class="card" style="background:rgba(0,0,0,.18); border-color:rgba(255,255,255,.16)">
+                <div class="pad">
+                  <div class="tiny"><b>Stripe Links</b> go at the top of this file:</div>
+                  <pre style="margin:8px 0 0; white-space:pre-wrap; color:var(--cream); font-size:12px">const STRIPE = {
+  starter: "PASTE_STRIPE_LINK_STARTER",
+  boss: "PASTE_STRIPE_LINK_BOSS",
+  ceo: "PASTE_STRIPE_LINK_CEO"
+};</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid three" style="grid-column:1/-1">
+            ${PricingCard("Starter", "$7", "Quick Start", ["2-feature demo", "Planner + Overview", "Basic templates"], "starter")}
+            ${PricingCard("Boss", "$19", "Most Popular", ["Full access", "Premium tools", "Affiliate ready"], "boss", true)}
+            ${PricingCard("CEO", "$39", "Owner-Level", ["Everything unlocked", "Export/Import", "Metrics + CRM"], "ceo")}
+          </div>
+        </div>
+      `;
+    }
+
+    function PricingCard(name, price, tag, feats, key, featured=false){
+      const glow = featured ? "border-color: rgba(212,175,55,.7); box-shadow: 0 18px 70px rgba(212,175,55,.12), var(--shadow);" : "";
+      const btnClass = featured ? "btn primary" : "btn";
+      return `
+        <div class="card" style="${glow}">
+          <div class="pad">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px">
+              <h3 style="margin:0">${name}</h3>
+              <span class="badge">${tag}</span>
+            </div>
+            <div style="font-size:34px; font-weight:950; margin-top:6px">${price}<span class="tiny">/mo</span></div>
+            <ul class="tiny" style="margin:12px 0 0; padding-left:16px; color:var(--muted)">
+              ${feats.map(f=>`<li style="margin:6px 0">${f}</li>`).join("")}
+            </ul>
+            <div class="hr"></div>
+            <button class="${btnClass}" data-buy="${key}" style="width:100%">Start ${name}</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function LoginView(){
+      return `
+        <div class="grid two">
+          <div class="card">
+            <div class="pad">
+              <h2 style="margin:0 0 8px">Login</h2>
+              <p class="muted" style="margin:0">Owner unlocks everything. Buyer demo unlocks 2 features.</p>
+              <div class="hr"></div>
+
+              <label class="tiny">Email</label>
+              <input id="loginEmail" placeholder="owner@hustlerher.com"/>
+
+              <div style="height:10px"></div>
+
+              <label class="tiny">Password</label>
+              <input id="loginPass" type="password" placeholder="••••••••"/>
+
+              <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+                <button class="btn primary" id="loginBtn">Login</button>
+                <a class="btn" href="#/">Back</a>
+              </div>
+
+              <div class="hr"></div>
+
+              <div class="tiny">
+                <b>Owner:</b> owner@hustlerher.com / HustleGold!39<br/>
+                <b>Buyer Demo:</b> demo@hustlerher.com / Demo123!
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="pad">
+              <h3>Demo Access Includes</h3>
+              <div class="muted">Unlocked:</div>
+              <ul style="margin:10px 0 0; padding-left:16px; color:var(--muted)">
+                <li>✨ Overview</li>
+                <li>🗓 Content Planner</li>
+              </ul>
+              <div class="hr"></div>
+              <div class="muted">Locked:</div>
+              <ul style="margin:10px 0 0; padding-left:16px; color:var(--muted)">
+                <li>📇 Contacts Hub</li>
+                <li>🎯 Goals</li>
+                <li>📝 Notes + Hooks</li>
+                <li>💰 Metrics</li>
+                <li>Export / Import</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function AffiliateView(){
+      return `
+        <div class="grid two">
+          <div class="card">
+            <div class="pad">
+              <h2 style="margin:0 0 8px">Affiliate Login</h2>
+              <p class="muted" style="margin:0">Get your referral link + track clicks & signups.</p>
+              <div class="hr"></div>
+
+              <label class="tiny">Affiliate Email</label>
+              <input id="affEmail" placeholder="affiliate@hustlerher.com"/>
+
+              <div style="height:10px"></div>
+
+              <label class="tiny">Password</label>
+              <input id="affPass" type="password" placeholder="••••••••"/>
+
+              <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+                <button class="btn primary" id="affLoginBtn">Login</button>
+                <a class="btn" href="#/">Back</a>
+              </div>
+
+              <div class="hr"></div>
+              <div class="tiny">
+                <b>Affiliate Demo:</b> affiliate@hustlerher.com / Aff123!
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="pad">
+              <h3>Affiliate Payout (Standard)</h3>
+              <div class="muted">Example rates (edit anytime):</div>
+              <ul style="margin:10px 0 0; padding-left:16px; color:var(--muted)">
+                <li>Starter: 30%</li>
+                <li>Boss: 35%</li>
+                <li>CEO: 40%</li>
+              </ul>
+              <div class="hr"></div>
+              <div class="muted">Affiliate dashboard includes:</div>
+              <ul style="margin:10px 0 0; padding-left:16px; color:var(--muted)">
+                <li>Referral link generator</li>
+                <li>Clicks + signups tracking (demo)</li>
+                <li>Estimated commission</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function AffiliateDashView(){
+      const code = store.get("hh.affiliateCode", "HH-001");
+      const clicks = store.get("hh.affClicks", {});
+      const signups = store.get("hh.affSignups", {});
+      const myClicks = clicks[code] || 0;
+      const mySignups = signups[code] || 0;
+
+      const base = location.origin + location.pathname; // project url
+      const refLink = `${base}?ref=${encodeURIComponent(code)}#/pricing`;
+
+      // Demo commission estimate:
+      const estCommission = (mySignups * 8.50).toFixed(2); // example
+
+      return `
+        <div class="card">
+          <div class="pad">
+            <h2 style="margin:0 0 6px">Affiliate Dashboard</h2>
+            <div class="muted">Your referral code: <b style="color:var(--cream)">${code}</b></div>
+            <div class="hr"></div>
+
+            <div class="grid three">
+              <div class="card"><div class="pad">
+                <div class="tiny">Clicks</div>
+                <div style="font-size:30px; font-weight:950">${myClicks}</div>
+              </div></div>
+              <div class="card"><div class="pad">
+                <div class="tiny">Signups</div>
+                <div style="font-size:30px; font-weight:950">${mySignups}</div>
+              </div></div>
+              <div class="card"><div class="pad">
+                <div class="tiny">Est. Commission</div>
+                <div style="font-size:30px; font-weight:950">$${estCommission}</div>
+              </div></div>
+            </div>
+
+            <div class="hr"></div>
+
+            <label class="tiny">Your Affiliate Link</label>
+            <input id="affLink" value="${refLink}" readonly />
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+              <button class="btn primary" id="copyAff">Copy Link</button>
+              <button class="btn rose" id="simulateSignup">Simulate Signup</button>
+              <button class="btn dark" id="logoutAff">Logout</button>
+            </div>
+
+            <div class="lock" style="margin-top:14px">
+              <span class="spark"></span>
+              This is a standard affiliate demo system (local tracking). Add backend later if desired.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function LockedView(){
+      return `
+        <div class="card"><div class="pad">
+          <h2 style="margin:0 0 8px">Locked Feature</h2>
+          <p class="muted" style="margin:0 0 12px">This feature is locked in the demo dashboard.</p>
+          <a class="btn primary" href="#/pricing">Upgrade Access</a>
+        </div></div>
+      `;
+    }
+
+    function AppView(qs){
+      if(!requireLoginForApp()) return "";
+      const session = getSession();
+      const isOwner = session.role === "owner";
+      let tab = qs.get("tab") || "overview";
+
+      if(!isOwner && !DEMO_ALLOWED_TABS.has(tab)) tab = "overview";
+
+      return `
+        <div class="appShell">
+          <div class="card side">
+            <h4>Dashboard</h4>
+            <div class="lock" style="margin-top:0">
+              <span class="spark"></span>
+              Mode: <b>${isOwner ? "Owner (Full Access)" : "Buyer Demo (2 Features)"}</b>
+            </div>
+
+            <div style="height:10px"></div>
+
+            <a href="#/app?tab=overview" class="${tab==="overview"?"active":""}">✨ Overview</a>
+            <a href="#/app?tab=planner" class="${tab==="planner"?"active":""}">🗓 Content Planner</a>
+
+            <div class="hr"></div>
+
+            <a href="#/app?tab=contacts" class="${tab==="contacts"?"active":""}">📇 Contacts Hub</a>
+            <a href="#/app?tab=goals" class="${tab==="goals"?"active":""}">🎯 Goals</a>
+            <a href="#/app?tab=notes" class="${tab==="notes"?"active":""}">📝 Notes + Hooks</a>
+            <a href="#/app?tab=metrics" class="${tab==="metrics"?"active":""}">💰 Metrics</a>
+
+            <div class="hr"></div>
+            <button class="btn dark" id="logoutBtn2" style="width:100%">Logout</button>
+          </div>
+
+          <div class="card">
+            <div class="pad">
+              ${AppTab(tab, isOwner)}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function AppTab(tab, isOwner){
+      if(tab==="overview"){
+        return `
+          <h2 style="margin:0 0 6px">Boss Overview</h2>
+          <div class="muted">Saved in browser • no backend.</div>
+          <div class="hr"></div>
+
+          <div class="grid three">
+            <div class="card"><div class="pad">
+              <div class="tiny">Revenue</div>
+              <div style="font-size:30px; font-weight:950">$${state.metrics.revenue}</div>
+            </div></div>
+            <div class="card"><div class="pad">
+              <div class="tiny">Clicks</div>
+              <div style="font-size:30px; font-weight:950">${state.metrics.clicks}</div>
+            </div></div>
+            <div class="card"><div class="pad">
+              <div class="tiny">Leads</div>
+              <div style="font-size:30px; font-weight:950">${state.metrics.leads}</div>
+            </div></div>
+          </div>
+
+          <div class="hr"></div>
+
+          <label class="tiny">Quick Notes</label>
+          <textarea id="notesBox" placeholder="Hooks, captions, offers...">${escapeHtml(state.notes)}</textarea>
+          <div class="tiny" style="margin-top:8px">Auto-saved</div>
+        `;
+      }
+
+      if(tab==="planner"){
+        return `
+          <h2 style="margin:0 0 6px">Content Planner</h2>
+          <div class="muted">Add posts to your calendar.</div>
+          <div class="hr"></div>
+
+          <div class="row">
+            <div><label class="tiny">Date</label><input id="calDate" type="date"/></div>
+            <div><label class="tiny">Platform</label><input id="calPlatform" placeholder="IG / TikTok / Pinterest"/></div>
+          </div>
+          <div style="margin-top:12px">
+            <label class="tiny">Title</label>
+            <input id="calTitle" placeholder="Reel: 3 hooks that sell"/>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+            <button class="btn primary" id="addCal">Add Post</button>
+          </div>
+
+          <div class="hr"></div>
+          <div class="grid">
+            ${state.calendar.map(item=>`
+              <div class="card"><div class="pad" style="display:flex; justify-content:space-between; gap:10px; align-items:center">
+                <div>
+                  <b>${escapeHtml(item.date)}</b> • <span class="badge">${escapeHtml(item.platform)}</span>
+                  <div class="muted" style="margin-top:6px">${escapeHtml(item.title)}</div>
+                </div>
+                <button class="btn" data-delcal="${item.id}">Remove</button>
+              </div></div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      // Owner-only features:
+      if(!isOwner) return LockedView();
+
+      if(tab==="contacts"){
+        return `
+          <h2 style="margin:0 0 6px">Contacts Hub</h2>
+          <div class="muted">Owner only: track brands/clients.</div>
+          <div class="hr"></div>
+          <div class="tiny">This is unlocked for Owner login ✅</div>
+        `;
+      }
+
+      if(tab==="goals"){
+        return `
+          <h2 style="margin:0 0 6px">Goals</h2>
+          <div class="muted">Owner only: set targets.</div>
+          <div class="hr"></div>
+          <div class="tiny">This is unlocked for Owner login ✅</div>
+        `;
+      }
+
+      if(tab==="notes"){
+        return `
+          <h2 style="margin:0 0 6px">Notes + Hooks</h2>
+          <div class="muted">Owner only: advanced notes system.</div>
+          <div class="hr"></div>
+          <div class="tiny">This is unlocked for Owner login ✅</div>
+        `;
+      }
+
+      if(tab==="metrics"){
+        return `
+          <h2 style="margin:0 0 6px">Metrics</h2>
+          <div class="muted">Owner only: tracking tools.</div>
+          <div class="hr"></div>
+          <div class="tiny">This is unlocked for Owner login ✅</div>
+        `;
+      }
+
+      return `<div class="muted">Unknown tab.</div>`;
+    }
+
+    // =============== events ===============
+    function bindHandlers(){
+      const s = getSession();
+
+      // Stripe buy
+      document.querySelectorAll("[data-buy]").forEach(btn=>{
+        btn.onclick = ()=>{
+          const key = btn.getAttribute("data-buy");
+          const link = STRIPE[key];
+          if(!link || link.startsWith("PASTE_")) return toast("Paste Stripe links first.");
+          window.open(link, "_blank","noopener,noreferrer");
+        };
+      });
+
+      // Login
+      const loginBtn = $("#loginBtn");
+      if(loginBtn){
+        loginBtn.onclick = ()=>{
+          const email = ($("#loginEmail").value||"").trim().toLowerCase();
+          const pass  = ($("#loginPass").value||"").trim();
+
+          if(email===AUTH.owner.email && pass===AUTH.owner.pass){
+            setSession("owner"); toast("Owner login ✅"); location.hash="#/app"; return;
+          }
+          if(email===AUTH.demo.email && pass===AUTH.demo.pass){
+            setSession("demo"); toast("Buyer demo login ✨"); location.hash="#/app"; return;
+          }
+          toast("Invalid login.");
+        };
+      }
+
+      // Affiliate Login
+      const affLoginBtn = $("#affLoginBtn");
+      if(affLoginBtn){
+        affLoginBtn.onclick = ()=>{
+          const email = ($("#affEmail").value||"").trim().toLowerCase();
+          const pass  = ($("#affPass").value||"").trim();
+          if(email===AUTH.affiliate.email && pass===AUTH.affiliate.pass){
+            setSession("affiliate");
+            // assign an affiliate code if none:
+            if(!store.get("hh.affiliateCode", "")){
+              const newCode = "HH-" + String(Math.floor(100 + Math.random()*900));
+              store.set("hh.affiliateCode", newCode);
+            }
+            toast("Affiliate login ✅");
+            location.hash = "#/affiliate-dashboard";
+            return;
+          }
+          toast("Invalid affiliate login.");
+        };
+      }
+
+      // Affiliate Dashboard
+      const copyAff = $("#copyAff");
+      if(copyAff){
+        copyAff.onclick = async ()=>{
+          const link = $("#affLink").value;
+          try{ await navigator.clipboard.writeText(link); toast("Affiliate link copied."); }
+          catch{ toast("Copy failed. Select link and copy manually."); }
+        };
+      }
+
+      const simulateSignup = $("#simulateSignup");
+      if(simulateSignup){
+        simulateSignup.onclick = ()=>{
+          const code = store.get("hh.affiliateCode","HH-001");
+          const signups = store.get("hh.affSignups", {});
+          signups[code] = (signups[code] || 0) + 1;
+          store.set("hh.affSignups", signups);
+          toast("Simulated signup added ✅");
+          render();
+        };
+      }
+
+      const logoutAff = $("#logoutAff");
+      if(logoutAff) logoutAff.onclick = logout;
+
+      const logoutBtn2 = $("#logoutBtn2");
+      if(logoutBtn2) logoutBtn2.onclick = logout;
+
+      // notes autosave
+      document.querySelectorAll("#notesBox").forEach(el=>{
+        el.oninput = ()=>{ state.notes = el.value; persistAll(); };
+      });
+
+      // planner add/remove
+      const addCal = $("#addCal");
+      if(addCal){
+        addCal.onclick = ()=>{
+          const date = $("#calDate").value;
+          const platform = ($("#calPlatform").value||"").trim();
+          const title = ($("#calTitle").value||"").trim();
+          if(!date||!platform||!title) return toast("Add date, platform, title.");
+          state.calendar.unshift({id: crypto.randomUUID(), date, platform, title});
+          persistAll(); toast("Post added."); render();
+        };
+      }
+      document.querySelectorAll("[data-delcal]").forEach(b=>{
+        b.onclick = ()=>{
+          const id = b.getAttribute("data-delcal");
+          state.calendar = state.calendar.filter(x=>x.id!==id);
+          persistAll(); render();
+        };
+      });
+    }
+
+    // =============== render ===============
+    function render(){
+      const { path, qs } = parseRoute();
+      const normalized = (path === "#/dashboard") ? "#/app" : path;
+      setActiveNav(normalized);
+
+      const view = $("#view");
+      if(normalized === "#/") view.innerHTML = LandingView();
+      else if(normalized === "#/pricing") view.innerHTML = PricingView();
+      else if(normalized === "#/login") view.innerHTML = LoginView();
+      else if(normalized === "#/affiliate") view.innerHTML = AffiliateView();
+      else if(normalized === "#/affiliate-dashboard"){
+        const s = getSession();
+        if(s.role !== "affiliate"){ toast("Affiliate login required."); location.hash="#/affiliate"; return; }
+        view.innerHTML = AffiliateDashView();
+      }
+      else if(normalized === "#/app") view.innerHTML = AppView(qs);
+      else view.innerHTML = `<div class="card"><div class="pad"><h2>Not found</h2><a class="btn primary" href="#/">Go Home</a></div></div>`;
+
+      bindHandlers();
+    }
+
+    function escapeHtml(str){
+      return (str ?? "").replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    window.addEventListener("hashchange", render);
+    window.addEventListener("load", ()=>{
+      if(!location.hash) location.hash="#/";
+      render();
+    });
+  </script>
+</body>
+</html>
