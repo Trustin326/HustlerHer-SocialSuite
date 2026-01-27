@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Hustle Her Social Suite</title>
+  <meta name="description" content="Luxury micro-SaaS social planner for business women. Plan content. Post like a CEO. Profit in heels."/>
+  <style>
+    :root{
+      --bg:#07060a;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.08);
+      --stroke:rgba(255,255,255,.10);
+      --text:#f4eef6;
+      --muted:rgba(244,238,246,.70);
+      --gold:#d6b36a;
+      --gold2:#f2d79b;
+      --plum:#7b245f;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: radial-gradient(1200px 700px at 12% 15%, rgba(150,40,95,.45), transparent 55%),
+                  radial-gradient(900px 700px at 88% 22%, rgba(214,179,106,.40), transparent 52%),
+                  radial-gradient(900px 600px at 65% 85%, rgba(214,179,106,.18), transparent 55%),
+                  linear-gradient(180deg, #05040a 0%, #07060a 55%, #06040a 100%);
+      overflow-x:hidden;
+    }
+
+    /* --- TOP NAV --- */
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, rgba(5,4,10,.85) 0%, rgba(5,4,10,.50) 100%);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .nav-inner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+      user-select:none;
+    }
+    .brand-badge{
+      width:34px;height:34px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(242,215,155,.95), rgba(214,179,106,.55) 45%, rgba(123,36,95,.35) 100%);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 0 0 6px rgba(214,179,106,.10);
+      display:grid; place-items:center;
+      overflow:hidden;
+    }
+    .brand-badge span{
+      font-size:14px;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.4));
+    }
+    .nav-links{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:650;
+      font-size:13px;
+      cursor:pointer;
+      transition: .18s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .pill:hover{ transform: translateY(-1px); border-color: rgba(214,179,106,.45); }
+    .pill.gold{
+      background: linear-gradient(180deg, rgba(214,179,106,.25), rgba(214,179,106,.12));
+      border-color: rgba(214,179,106,.35);
+    }
+    .pill.primary{
+      background: linear-gradient(180deg, rgba(123,36,95,.55), rgba(123,36,95,.25));
+      border-color: rgba(214,179,106,.25);
+    }
+
+    /* --- MAIN HERO --- */
+    .wrap{max-width:1200px;margin:0 auto;padding:26px 18px 80px}
+    .hero{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr; }
+    }
+
+    .hero-card{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+    }
+    .tagline{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:7px 12px;
+      border-radius:999px;
+      background: rgba(123,36,95,.35);
+      border:1px solid rgba(214,179,106,.25);
+      color: rgba(244,238,246,.92);
+      font-weight:700;
+      font-size:12px;
+    }
+    h1{
+      margin:14px 0 10px;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size: clamp(38px, 4.5vw, 56px);
+      line-height:1.02;
+      letter-spacing:-.6px;
+    }
+    h1 .gold{ color: var(--gold2); text-shadow: 0 10px 28px rgba(214,179,106,.18); }
+    .sub{
+      color: var(--muted);
+      font-size: 15px;
+      line-height:1.55;
+      max-width: 54ch;
+      margin: 10px 0 18px;
+    }
+    .cta-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .btn{
+      padding:11px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:750;
+      transition:.18s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(214,179,106,.45); }
+    .btn.gold{
+      background: linear-gradient(180deg, rgba(214,179,106,.25), rgba(214,179,106,.14));
+      border-color: rgba(214,179,106,.35);
+    }
+    .mini-tabs{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .mini-tab{
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      color: rgba(244,238,246,.92);
+      display:flex; align-items:center; gap:8px;
+    }
+
+    /* --- RIGHT MOCK DASHBOARD PANEL --- */
+    .dash-panel{
+      padding:18px;
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background: radial-gradient(700px 420px at 20% 30%, rgba(214,179,106,.22), transparent 55%),
+                  radial-gradient(600px 380px at 90% 10%, rgba(123,36,95,.28), transparent 55%),
+                  rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .dash-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .today-pill{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(214,179,106,.35);
+      background: rgba(214,179,106,.12);
+      font-weight:800;
+      font-size:11px;
+      color: rgba(242,215,155,.95);
+      letter-spacing:.5px;
+    }
+    .stats{
+      display:flex;
+      gap:16px;
+      color: rgba(244,238,246,.80);
+      font-size:12px;
+      align-items:center;
+    }
+    .stats b{ color:#fff; font-size:14px }
+    .dash-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .dash-box{
+      border-radius:16px;
+      padding:12px 12px;
+      background: rgba(0,0,0,.24);
+      border:1px solid rgba(255,255,255,.09);
+      min-height:70px;
+    }
+    .dash-box h4{
+      margin:0 0 6px;
+      font-size:14px;
+      letter-spacing:.2px;
+    }
+    .dash-box p{
+      margin:0;
+      font-size:12px;
+      color: rgba(244,238,246,.65);
+    }
+
+    .dash-characters{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:14px;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .chars{
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+    }
+
+    .char-img{
+      width:58px; height:58px;
+      border-radius:16px;
+      border:1px solid rgba(214,179,106,.25);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,.5);
+      object-fit:cover;
+    }
+    .char-img.big{ width:84px; height:84px; border-radius:18px; }
+
+    .dash-cta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+
+    /* --- SECTION CARDS --- */
+    .section-title{
+      margin:26px 0 10px;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size:28px;
+      letter-spacing:-.3px;
+    }
+    .section-sub{
+      color:rgba(244,238,246,.70);
+      margin:0 0 14px;
+      font-size:14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    .feat{
+      padding:16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      min-height:120px;
+    }
+    .feat .icon{
+      width:34px; height:34px;
+      border-radius:12px;
+      background: rgba(214,179,106,.14);
+      border:1px solid rgba(214,179,106,.28);
+      display:grid;
+      place-items:center;
+      margin-bottom:10px;
+    }
+    .feat h3{margin:0 0 6px;font-size:16px}
+    .feat p{margin:0;color:rgba(244,238,246,.68);font-size:13px;line-height:1.45}
+
+    /* --- LOGIN MODAL --- */
+    .modal-overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.62);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:100;
+      padding:18px;
+    }
+    .modal{
+      width:min(520px, 100%);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 30px 120px rgba(0,0,0,.7);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .modal h2{
+      margin:6px 0 4px;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      letter-spacing:-.4px;
+    }
+    .modal p{
+      margin:0 0 14px;
+      color: rgba(244,238,246,.70);
+      font-size:13px;
+      line-height:1.35;
+    }
+    .close-x{
+      position:absolute; right:14px; top:12px;
+      width:36px;height:36px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      color:#fff;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .form{
+      display:grid;
+      gap:10px;
+      margin-top:10px;
+    }
+    .input{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color:#fff;
+      outline:none;
+      font-weight:650;
+    }
+    .helper{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12px;
+      color: rgba(244,238,246,.65);
+      margin-top:2px;
+    }
+    .notice{
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(214,179,106,.22);
+      background: rgba(214,179,106,.10);
+      color: rgba(242,215,155,.95);
+      font-size:12px;
+      line-height:1.35;
+      margin-top:10px;
+      display:none;
+    }
+
+    /* --- FOOT --- */
+    footer{
+      margin-top:26px;
+      padding:18px;
+      color: rgba(244,238,246,.55);
+      font-size:12px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand" onclick="goHome()" style="cursor:pointer">
+        <div class="brand-badge"><span>👩🏽‍💼</span></div>
+        <div>Hustle Her Social Suite</div>
+      </div>
+
+      <nav class="nav-links">
+        <a class="pill" href="#/" onclick="goHome()">Home</a>
+        <a class="pill" href="#pricing" onclick="scrollToPricing()">Pricing</a>
+        <button class="pill gold" onclick="openLogin()">Login</button>
+        <button class="pill primary" onclick="openDashboard()">Open Dashboard</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero-card">
+        <div class="tagline">Luxury planner energy • Social media execution</div>
+        <h1>Plan your content.<br/>Post like a <span class="gold">CEO</span>.<br/>Profit in heels.</h1>
+        <p class="sub">
+          A mini micro-SaaS inspired by a digital planner workflow: contacts, goals, calendar, to-dos, and notes —
+          redesigned for women running marketing on Instagram, TikTok, and Pinterest.
+        </p>
+
+        <div class="cta-row">
+          <button class="btn gold" onclick="openDashboard()">Launch Dashboard</button>
+          <button class="btn" onclick="scrollToPricing()">See Pricing</button>
+        </div>
+
+        <div class="mini-tabs">
+          <div class="mini-tab">✨ Content Calendar</div>
+          <div class="mini-tab">🤝 Brand/Client Hub</div>
+          <div class="mini-tab">👑 CEO To-Dos</div>
+          <div class="mini-tab">📝 Notes + Hooks</div>
+        </div>
+      </div>
+
+      <!-- Dashboard visual -->
+      <div class="dash-panel" aria-label="Dashboard Preview">
+        <div class="dash-top">
+          <div class="today-pill">TODAY</div>
+          <div class="stats">
+            <div>Posts planned<br><b>3</b></div>
+            <div>Tasks<br><b>7</b></div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="dash-box">
+            <h4>IG Reel</h4>
+            <p>Hook: “Stop scrolling…”</p>
+          </div>
+          <div class="dash-box">
+            <h4>TikTok</h4>
+            <p>Behind-the-scenes</p>
+          </div>
+          <div class="dash-box">
+            <h4>Pins</h4>
+            <p>3 product visuals</p>
+          </div>
+          <div class="dash-box">
+            <h4>DM Follow-ups</h4>
+            <p>2 collab leads</p>
+          </div>
+        </div>
+
+        <div class="dash-characters">
+          <div class="chars">
+            <!-- ✅ IMPORTANT: these are inline fallbacks so images always show -->
+            <img class="char-img" alt="Character 1" src="assets/img/character-sol.png"
+                 onerror="this.src=fallback1"/>
+            <img class="char-img" alt="Character 2" src="assets/img/character-aria.png"
+                 onerror="this.src=fallback2"/>
+            <img class="char-img big" alt="Character 3" src="assets/img/character-viv.png"
+                 onerror="this.src=fallback3"/>
+          </div>
+
+          <div class="dash-cta">
+            <button class="btn" onclick="openLogin()">Login</button>
+            <button class="btn gold" onclick="openDashboard()">Open</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section>
+      <h2 class="section-title">What you get</h2>
+      <p class="section-sub">Planner-style structure, redesigned for social marketing workflows.</p>
+
+      <div class="grid">
+        <div class="feat">
+          <div class="icon">📅</div>
+          <h3>Content Calendar</h3>
+          <p>Plan posts by date + platform and keep launches organized.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">👑</div>
+          <h3>CEO To-Dos</h3>
+          <p>Daily checklist for content creation, posting, and follow-ups.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">🤝</div>
+          <h3>Contacts Hub</h3>
+          <p>Track brands, clients, affiliates, and collabs with notes + tags.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" style="margin-top:22px">
+      <h2 class="section-title">Pricing</h2>
+      <p class="section-sub">Connect your Stripe payment links anytime.</p>
+
+      <div class="grid">
+        <div class="feat">
+          <div class="icon">✨</div>
+          <h3>Starter</h3>
+          <p style="font-size:28px;margin:8px 0 6px;color:var(--gold2);font-weight:900">$7<span style="font-size:14px;color:rgba(244,238,246,.6)">/mo</span></p>
+          <p>Calendar + basic planner tools.</p>
+          <button class="btn gold" style="margin-top:10px" onclick="fakeCheckout('Starter')">Choose Starter</button>
+        </div>
+
+        <div class="feat" style="border-color:rgba(214,179,106,.35); background: rgba(214,179,106,.08)">
+          <div class="icon">💎</div>
+          <h3>Pro <span style="font-size:12px;color:rgba(244,238,246,.7)">(Most popular)</span></h3>
+          <p style="font-size:28px;margin:8px 0 6px;color:var(--gold2);font-weight:900">$19<span style="font-size:14px;color:rgba(244,238,246,.6)">/mo</span></p>
+          <p>Analytics preview + CRM features.</p>
+          <button class="btn gold" style="margin-top:10px" onclick="fakeCheckout('Pro')">Choose Pro</button>
+        </div>
+
+        <div class="feat">
+          <div class="icon">🏆</div>
+          <h3>Elite</h3>
+          <p style="font-size:28px;margin:8px 0 6px;color:var(--gold2);font-weight:900">$39<span style="font-size:14px;color:rgba(244,238,246,.6)">/mo</span></p>
+          <p>Everything unlocked + premium tools.</p>
+          <button class="btn gold" style="margin-top:10px" onclick="fakeCheckout('Elite')">Choose Elite</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="yr"></span> Hustle Her Social Suite • Built for GitHub Pages (no backend).
+    </footer>
+  </main>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="loginOverlay" onclick="overlayClick(event)">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Login">
+      <button class="close-x" onclick="closeLogin()">✕</button>
+      <h2>Login</h2>
+      <p>Sign in to open your dashboard and unlock tools.</p>
+
+      <div class="form">
+        <input id="email" class="input" placeholder="Email" autocomplete="username"/>
+        <input id="pass" class="input" placeholder="Password" type="password" autocomplete="current-password"/>
+
+        <button class="btn gold" onclick="doLogin()">Login</button>
+
+        <div class="helper">
+          <span>Demo login works instantly.</span>
+          <button class="pill" style="padding:6px 10px" onclick="fillDemo()">Use Demo</button>
+        </div>
+
+        <div class="notice" id="loginNotice"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ✅ Inline image fallbacks (so your photos don't disappear even if assets folder fails)
+    // These are tiny placeholder SVGs that keep layout intact.
+    const fallback1 = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+        <defs>
+          <radialGradient id="g" cx="35%" cy="35%">
+            <stop offset="0" stop-color="#f2d79b"/>
+            <stop offset="0.45" stop-color="#d6b36a"/>
+            <stop offset="1" stop-color="#7b245f"/>
+          </radialGradient>
+        </defs>
+        <rect width="100%" height="100%" rx="28" fill="url(#g)"/>
+        <text x="50%" y="55%" text-anchor="middle" font-size="42" fill="rgba(0,0,0,.55)">HH</text>
+      </svg>
+    `);
+
+    const fallback2 = fallback1;
+    const fallback3 = fallback1;
+
+    // Footer year
+    document.getElementById("yr").textContent = new Date().getFullYear();
+
+    function goHome(){
+      location.hash = "#/";
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function scrollToPricing(){
+      const el = document.getElementById("pricing");
+      el?.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function openDashboard(){
+      // your repo already has dashboard.html
+      window.location.href = "dashboard.html";
+    }
+
+    function openLogin(){
+      document.getElementById("loginOverlay").style.display = "flex";
+      document.getElementById("loginNotice").style.display = "none";
+      setTimeout(()=>document.getElementById("email").focus(), 80);
+    }
+    function closeLogin(){
+      document.getElementById("loginOverlay").style.display = "none";
+    }
+    function overlayClick(e){
+      if(e.target.id === "loginOverlay") closeLogin();
+    }
+
+    function fillDemo(){
+      document.getElementById("email").value = "demo@hustleher.com";
+      document.getElementById("pass").value = "demo123";
+      showNotice("Demo filled. Click Login ✅", false);
+    }
+
+    function showNotice(msg, isError=true){
+      const n = document.getElementById("loginNotice");
+      n.style.display = "block";
+      n.style.borderColor = isError ? "rgba(255,120,120,.35)" : "rgba(214,179,106,.35)";
+      n.style.background = isError ? "rgba(255,120,120,.12)" : "rgba(214,179,106,.12)";
+      n.style.color = isError ? "rgba(255,210,210,.95)" : "rgba(242,215,155,.95)";
+      n.textContent = msg;
+    }
+
+    function doLogin(){
+      const email = (document.getElementById("email").value || "").trim().toLowerCase();
+      const pass  = (document.getElementById("pass").value || "").trim();
+
+      // ✅ simple demo auth (no backend)
+      const ok =
+        (email === "demo@hustleher.com" && pass === "demo123") ||
+        (email === "owner@hustleher.com" && pass === "owner123");
+
+      if(!ok){
+        showNotice("Incorrect login. Try Demo or use owner@hustleher.com / owner123", true);
+        return;
+      }
+
+      const role = (email === "owner@hustleher.com") ? "owner" : "buyer";
+      localStorage.setItem("hhss_logged_in", "true");
+      localStorage.setItem("hhss_role", role);
+      localStorage.setItem("hhss_email", email);
+
+      showNotice("Success ✅ Opening dashboard…", false);
+      setTimeout(()=>{ window.location.href = "dashboard.html"; }, 650);
+    }
+
+    function fakeCheckout(plan){
+      alert("✅ Plan selected: " + plan + "\\n\\nAdd your Stripe links later (buttons can open Stripe Payment Links).");
+    }
+  </script>
+</body>
+</html>
