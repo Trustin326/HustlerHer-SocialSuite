@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hustle Her Social Suite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+margin:0;
+font-family:Arial;
+background:radial-gradient(circle,#2b0a2b,#000);
+color:white;
+}
+
+header {
+display:flex;
+justify-content:space-between;
+padding:20px;
+}
+
+button {
+padding:10px 20px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+}
+
+.gold { background:gold; color:black; }
+.locked { opacity:0.3; pointer-events:none; }
+.hidden { display:none; }
+
+.grid {
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card {
+background:#111;
+padding:20px;
+border-radius:12px;
+}
+
+.character {
+width:100%;
+border-radius:12px;
+}
+textarea { width:100%; height:80px; }
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Hustle Her Social Suite</h2>
+<div>
+<button onclick="showHome()">Home</button>
+<button onclick="showPricing()">Pricing</button>
+<button class="gold" onclick="login()">Login</button>
+</div>
+</header>
+
+<!-- HOME -->
+<div id="home">
+<h1 style="padding:20px;">Plan your content. Post like a CEO. Profit in heels.</h1>
+
+<div class="grid">
+<img class="character" src="https://picsum.photos/400/500">
+<img class="character" src="https://picsum.photos/401/500">
+<img class="character" src="https://picsum.photos/402/500">
+<img class="character" src="https://picsum.photos/403/500">
+</div>
+
+<h2 style="padding:20px;">Features</h2>
+<div class="grid" id="features"></div>
+
+<button class="gold" style="margin:20px;" onclick="showDashboard()">Open Dashboard</button>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" class="hidden">
+<h2 style="padding:20px;">Plans</h2>
+<div class="grid">
+<div class="card">Starter → 2 Features</div>
+<div class="card">Pro → 5 Features</div>
+<div class="card">CEO → All Features</div>
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+<h2 style="padding:20px;">Owner Dashboard</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Checklist</h3>
+<textarea id="checklist"></textarea>
+<button onclick="save('checklist')">Save</button>
+</div>
+
+<div class="card">
+<h3>To-Dos</h3>
+<textarea id="todos"></textarea>
+<button onclick="save('todos')">Save</button>
+</div>
+
+<div class="card">
+<h3>Timestamp Notes</h3>
+<textarea id="note"></textarea>
+<button onclick="addNote()">Add Note</button>
+<div id="notes"></div>
+</div>
+
+<div class="card">
+<h3>Marketing Vault</h3>
+<textarea id="docs"></textarea>
+<button onclick="save('docs')">Save</button>
+<button onclick="download('docs')">Download</button>
+</div>
+
+<div class="card">
+<h3>Affiliate System</h3>
+<p>Referrals: <span id="refs">0</span></p>
+<button onclick="addReferral()">Add Referral</button>
+</div>
+
+<div class="card">
+<h3>Analytics</h3>
+<p>Site Views: <span id="views"></span></p>
+<p>Profit: $<span id="profit"></span></p>
+</div>
+
+</div>
+</div>
+
+<script>
+const FEATURES=[
+"Content Calendar",
+"Analytics",
+"Affiliate System",
+"Notes",
+"To-Dos",
+"Checklist",
+"Marketing Vault",
+"Notifications"
+];
+
+let role="demo";
+
+function renderFeatures(){
+let box=document.getElementById("features");
+box.innerHTML="";
+FEATURES.forEach((f,i)=>{
+let locked=(role==="demo" && i>1);
+box.innerHTML+=`
+<div class="card ${locked?'locked':''}">
+<h3>${f}</h3>
+<p>${locked?'Upgrade Required':'Available'}</p>
+</div>`;
+});
+}
+renderFeatures();
+
+function login(){
+let user=prompt("Type OWNER or BUYER");
+if(user.toLowerCase()==="owner"){ role="owner"; showDashboard();}
+else{ role="buyer"; showDashboard();}
+renderFeatures();
+}
+
+function showHome(){ hideAll(); document.getElementById("home").classList.remove("hidden"); }
+function showPricing(){ hideAll(); document.getElementById("pricing").classList.remove("hidden"); }
+function showDashboard(){ hideAll(); document.getElementById("dashboard").classList.remove("hidden"); }
+
+function hideAll(){
+document.getElementById("home").classList.add("hidden");
+document.getElementById("pricing").classList.add("hidden");
+document.getElementById("dashboard").classList.add("hidden");
+}
+
+function save(id){
+localStorage.setItem(id,document.getElementById(id).value);
+}
+
+function addNote(){
+let txt=document.getElementById("note").value;
+let time=new Date().toLocaleString();
+document.getElementById("notes").innerHTML+=`<p>${time}: ${txt}</p>`;
+}
+
+function addReferral(){
+let r=Number(localStorage.getItem("ref")||0)+1;
+localStorage.setItem("ref",r);
+document.getElementById("refs").innerText=r;
+document.getElementById("profit").innerText=r*20;
+}
+
+let views=Number(localStorage.getItem("views")||0)+1;
+localStorage.setItem("views",views);
+document.getElementById("views").innerText=views;
+</script>
+
+</body>
+</html>
