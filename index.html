@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hustle Her Social Suite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+margin:0;
+font-family: 'Segoe UI', sans-serif;
+background: radial-gradient(circle at top,#3a0d33,#000);
+color:white;
+}
+
+header {
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+}
+
+button {
+padding:10px 20px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+background:linear-gradient(45deg,#caa33b,#f5d27a);
+color:black;
+font-weight:bold;
+}
+
+.hidden { display:none; }
+
+.grid {
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card {
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:12px;
+transition:0.3s;
+}
+
+.card:hover {
+transform:scale(1.03);
+background:rgba(255,255,255,0.1);
+}
+
+textarea,input {
+width:100%;
+padding:10px;
+margin:5px 0;
+border-radius:8px;
+border:none;
+}
+
+h1 span { color:#f5d27a; }
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>✨ Hustle Her Social Suite</h2>
+<div>
+<button onclick="showHome()">Home</button>
+<button onclick="showPricing()">Pricing</button>
+<button onclick="login()">Login</button>
+<button onclick="showDashboard()">Open Dashboard</button>
+</div>
+</header>
+
+<!-- HOME -->
+<div id="home">
+<h1 style="padding:20px;">
+Plan your content. <span>Post like a CEO.</span><br>Profit in heels.
+</h1>
+
+<div class="grid">
+<img src="https://picsum.photos/400/500?1">
+<img src="https://picsum.photos/400/500?2">
+<img src="https://picsum.photos/400/500?3">
+<img src="https://picsum.photos/400/500?4">
+</div>
+
+<div class="grid" id="featureGrid"></div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" class="hidden">
+<h2 style="padding:20px;">Pricing Plans</h2>
+<div class="grid">
+<div class="card">Starter → 2 Features</div>
+<div class="card">Pro → 5 Features</div>
+<div class="card">CEO → All Features</div>
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+<h2 style="padding:20px;">Dashboard</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>AI Writing Assistant</h3>
+<textarea id="aiInput" placeholder="Enter topic..."></textarea>
+<button onclick="generateAI()">Generate</button>
+<p id="aiOutput"></p>
+</div>
+
+<div class="card">
+<h3>Auto Reminder Scheduler</h3>
+<input type="datetime-local" id="reminderTime">
+<input placeholder="Reminder text" id="reminderText">
+<button onclick="addReminder()">Save Reminder</button>
+<div id="reminders"></div>
+</div>
+
+<div class="card">
+<h3>Notes + Photos</h3>
+<textarea id="note"></textarea>
+<input type="file" onchange="uploadImage(event)">
+<button onclick="saveNote()">Save</button>
+<div id="notes"></div>
+</div>
+
+<div class="card">
+<h3>Affiliate Tracker</h3>
+<p>Referrals: <span id="refs">0</span></p>
+<button onclick="addReferral()">Add Referral</button>
+</div>
+
+<div class="card">
+<h3>Admin Profit Tracker</h3>
+<p>Profit: $<span id="profit">0</span></p>
+</div>
+
+<div class="card">
+<h3>Feature Activity Overview</h3>
+<div id="activity"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+let role="demo";
+let activity=[];
+
+function logActivity(msg){
+let t=new Date().toLocaleString();
+activity.push(t+" — "+msg);
+document.getElementById("activity").innerHTML=activity.join("<br>");
+}
+
+function login(){
+let r=prompt("Enter role: owner / buyer / demo");
+role=r;
+alert("Logged in as "+role);
+logActivity("User logged in as "+role);
+}
+
+function showHome(){ hideAll(); home.classList.remove("hidden"); }
+function showPricing(){ hideAll(); pricing.classList.remove("hidden"); }
+function showDashboard(){ hideAll(); dashboard.classList.remove("hidden"); }
+
+function hideAll(){
+home.classList.add("hidden");
+pricing.classList.add("hidden");
+dashboard.classList.add("hidden");
+}
+
+const FEATURES=[
+"Content Calendar",
+"Analytics",
+"Affiliate",
+"Notes",
+"To-Dos",
+"Checklist",
+"Marketing Vault",
+"Reminders"
+];
+
+function renderFeatures(){
+featureGrid.innerHTML="";
+FEATURES.forEach((f,i)=>{
+let locked=(role==="demo" && i>1);
+featureGrid.innerHTML+=`
+<div class="card">
+<h3>${f}</h3>
+<p>${locked?"🔒 Locked":"Open"}</p>
+</div>`;
+});
+}
+renderFeatures();
+
+function generateAI(){
+let input=aiInput.value;
+aiOutput.innerText="✨ AI Suggestion: Try posting educational content about "+input+" 3x this week.";
+logActivity("AI generated content");
+}
+
+function addReminder(){
+let t=reminderTime.value;
+let txt=reminderText.value;
+reminders.innerHTML+=`<p>${t} — ${txt}</p>`;
+logActivity("Reminder scheduled");
+}
+
+function saveNote(){
+let n=note.value;
+notes.innerHTML+=`<p>${new Date().toLocaleString()} — ${n}</p>`;
+logActivity("Note saved");
+}
+
+function uploadImage(e){
+let file=e.target.files[0];
+let reader=new FileReader();
+reader.onload=function(){
+notes.innerHTML+=`<img src="${reader.result}" width="100%">`;
+logActivity("Image uploaded");
+}
+reader.readAsDataURL(file);
+}
+
+function addReferral(){
+let r=Number(localStorage.getItem("ref")||0)+1;
+localStorage.setItem("ref",r);
+refs.innerText=r;
+profit.innerText=r*20;
+logActivity("Referral added");
+}
+</script>
+
+</body>
+</html>
