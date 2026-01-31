@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hustle Her Social Suite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:radial-gradient(circle,#2b0a2b,#000);
+color:white;
+}
+header{
+display:flex;
+justify-content:space-between;
+padding:20px;
+}
+button{
+padding:8px 14px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+margin:4px;
+}
+.gold{background:gold;color:black;}
+.hidden{display:none;}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px;
+}
+.card{
+background:#111;
+padding:15px;
+border-radius:12px;
+}
+textarea,input{width:100%;}
+.feature-view{padding:20px;}
+img.uploaded{width:100px;border-radius:8px;margin-top:10px;}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Hustle Her Social Suite</h2>
+<div>
+<button onclick="showHome()">Home</button>
+<button onclick="showDashboard()">Dashboard</button>
+<button class="gold" onclick="login()">Login</button>
+</div>
+</header>
+
+<div id="home">
+<h1 style="padding:20px;">Plan your content. Post like a CEO. Profit in heels.</h1>
+
+<div class="grid" id="features"></div>
+</div>
+
+<div id="dashboard" class="hidden">
+<h2 style="padding:20px;">Dashboard</h2>
+<div id="featureArea" class="feature-view"></div>
+</div>
+
+<script>
+const FEATURES=[
+"Content Calendar",
+"Notes",
+"Marketing Vault",
+"Checklist",
+"To-Dos",
+"Affiliate System",
+"Analytics",
+"AI Generator",
+"Activity Overview"
+];
+
+let role="demo";
+let historyLog=[];
+
+function logActivity(feature,action){
+let entry={feature,action,time:new Date().toLocaleString()};
+historyLog.push(entry);
+}
+
+function renderFeatures(){
+let box=document.getElementById("features");
+box.innerHTML="";
+FEATURES.forEach((f,i)=>{
+let locked=(role==="demo" && i>1);
+box.innerHTML+=`
+<div class="card">
+<h3>${f}</h3>
+<button onclick="openFeature('${f}')" ${locked?'disabled':''}>Open</button>
+</div>`;
+});
+}
+
+function login(){
+let user=prompt("Type OWNER or BUYER");
+role=user.toLowerCase();
+renderFeatures();
+}
+
+function showHome(){
+document.getElementById("home").classList.remove("hidden");
+document.getElementById("dashboard").classList.add("hidden");
+}
+function showDashboard(){
+document.getElementById("home").classList.add("hidden");
+document.getElementById("dashboard").classList.remove("hidden");
+}
+
+function openFeature(name){
+let area=document.getElementById("featureArea");
+area.innerHTML=`<h3>${name}</h3>`;
+if(name==="Notes") notesUI(area);
+if(name==="Content Calendar") calendarUI(area);
+if(name==="Marketing Vault") vaultUI(area);
+if(name==="AI Generator") aiUI(area);
+if(name==="Activity Overview") overviewUI(area);
+}
+
+function notesUI(area){
+area.innerHTML+=`
+<textarea id="noteText"></textarea>
+<input type="file" onchange="uploadImage(event,'noteImg')">
+<div id="noteImg"></div>
+<button onclick="saveNote()">Save</button>
+<button onclick="exportCSV('notes')">Export CSV</button>
+<div id="notes"></div>`;
+}
+
+function saveNote(){
+let txt=document.getElementById("noteText").value;
+let id=Date.now();
+let data=JSON.parse(localStorage.getItem("notes")||"[]");
+data.push({id,txt});
+localStorage.setItem("notes",JSON.stringify(data));
+logActivity("Notes","Added note");
+renderNotes();
+}
+
+function renderNotes(){
+let data=JSON.parse(localStorage.getItem("notes")||"[]");
+document.getElementById("notes").innerHTML=data.map(n=>
+`<p>${n.txt} <button onclick="deleteItem('notes',${n.id})">Delete</button></p>`
+).join("");
+}
+
+function uploadImage(e,id){
+let reader=new FileReader();
+reader.onload=()=>{document.getElementById(id).innerHTML=`<img src="${reader.result}" class="uploaded">`;};
+reader.readAsDataURL(e.target.files[0]);
+}
+
+function deleteItem(type,id){
+let data=JSON.parse(localStorage.getItem(type)||"[]");
+data=data.filter(x=>x.id!==id);
+localStorage.setItem(type,JSON.stringify(data));
+logActivity(type,"Deleted entry");
+renderNotes();
+}
+
+function exportCSV(type){
+let data=JSON.parse(localStorage.getItem(type)||"[]");
+let csv=data.map(o=>Object.values(o).join(",")).join("\n");
+let blob=new Blob([csv]);
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download=type+".csv";
+a.click();
+}
+
+function aiUI(area){
+area.innerHTML+=`
+<input id="prompt" placeholder="Enter prompt">
+<button onclick="generate()">Generate</button>
+<div id="aiResults"></div>`;
+}
+
+function generate(){
+let txt=document.getElementById("prompt").value;
+let out=`AI Suggestion: ${txt}`;
+let results=JSON.parse(localStorage.getItem("ai")||"[]");
+results.push(out);
+localStorage.setItem("ai",JSON.stringify(results));
+document.getElementById("aiResults").innerHTML+=`<p>${out}</p>`;
+logActivity("AI Generator","Generated content");
+}
+
+function overviewUI(area){
+area.innerHTML+=historyLog.map(h=>`<p>${h.time} - ${h.feature}: ${h.action}</p>`).join("");
+}
+
+renderFeatures();
+</script>
+
+</body>
+</html>
